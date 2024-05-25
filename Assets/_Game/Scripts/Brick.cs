@@ -1,15 +1,16 @@
 ﻿using UnityEngine;
 
-public class Brick : MonoBehaviour
+public class Brick : GameUnit
 {
-    public GameObject brickPrefab; // Đối tượng prefab
-    public int rows = 10; // Số hàng
-    public int columns = 10; // Số cột
-    public float spacing = 2.0f; // Khoảng cách giữa các đối tượng
-    public Vector3 startPosition; // Vị trí bắt đầu của lưới
+    public GameUnit brickPrefab; // The prefab to be spawned
+    /*public int rows = 10; // Number of rows
+    public int columns = 10; // Number of columns
+    public float spacing = 2.0f; // Spacing between objects
+    public Vector3 startPosition; // Starting position of the grid
 
     void Start()
     {
+        SimplePool.Preload(brickPrefab, rows * columns, transform, true);
         SpawnGrid();
     }
 
@@ -19,11 +20,10 @@ public class Brick : MonoBehaviour
         {
             for (int j = 0; j < columns; j++)
             {
-                // Tính toán vị trí
                 Vector3 position = startPosition + new Vector3(i * spacing, 0, j * spacing);
-                // Tạo đối tượng
-                Instantiate(brickPrefab, position, Quaternion.identity);
+                Brick brick = SimplePool.Spawn<Brick>(brickPrefab, position, Quaternion.identity);
+                brick.transform.SetParent(transform);
             }
         }
-    }
+    }*/
 }
