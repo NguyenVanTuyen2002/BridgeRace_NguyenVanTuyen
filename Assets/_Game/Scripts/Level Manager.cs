@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    public int rows = 10; // Số hàng
-    public int columns = 10; // Số cột
-    public float spacing = 2.0f; // Khoảng cách giữa các đối tượng
-    public Vector3 startPosition; // Vị trí bắt đầu của lưới
+    public int rows = 10;
+    public int columns = 10;
+    public float spacing = 2.0f;
+    public Vector3 startPosition;
     public Brick brickPrefab;
     void Start()
     {
