@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cache 
+public class Cache
 {
     private static Dictionary<Collider, Character> characters = new Dictionary<Collider, Character>();
 
@@ -14,8 +14,8 @@ public class Cache
         }
 
         return characters[collider];
-    } 
-    
+    }
+
     private static Dictionary<Collider, Brick> bricks = new Dictionary<Collider, Brick>();
 
     public static Brick GetBrick(Collider collider)
@@ -26,8 +26,9 @@ public class Cache
         }
 
         return bricks[collider];
-    }  
-    
+    }
+
+
     private static Dictionary<Collider, Stair> stairs = new Dictionary<Collider, Stair>();
 
     public static Stair GetStair(Collider collider)
@@ -39,4 +40,16 @@ public class Cache
 
         return stairs[collider];
     }
+
+    private static Dictionary<Collider, BrickBridge> brickBridges = new Dictionary<Collider, BrickBridge>();
+
+    public static BrickBridge GetBrickBridge(Collider collider) {
+        if (!brickBridges.ContainsKey(collider))
+        {
+            brickBridges.Add(collider , collider.GetComponent<BrickBridge>());
+            
+        }
+        return brickBridges[collider];
+    }
+    
 }

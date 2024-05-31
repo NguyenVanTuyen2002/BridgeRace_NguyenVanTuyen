@@ -6,6 +6,10 @@ public class Brick : GameUnit
     [SerializeField] ColorDataSO colorDataSO;
     public ColorType colorType;
 
+    private void Start()
+    {
+        
+    }
     public void ChangeColor(ColorType color)
     {
         this.colorType = color;
