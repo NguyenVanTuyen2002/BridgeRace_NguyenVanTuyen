@@ -2,50 +2,83 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Character : GameUnit
 {
-    private IState<Character> currentState;
-    public LayerMask brickBridgeLayer;
-    public Renderer skinCharacter;
-    public ColorType colorType;
-    [SerializeField] ColorDataSO colorDataSO;
+    [SerializeField] protected ColorDataSO colorDataSO;
     [SerializeField] private List<SkinnedMeshRenderer> renderers;
     [SerializeField] private BrickCharacter brickCharacterPrefab;
     [SerializeField] private Transform brickContainer;
-    [SerializeField] private List<BrickCharacter> brickCharactors = new List<BrickCharacter>();
+    [SerializeField] protected List<BrickCharacter> brickCharactors = new List<BrickCharacter>();
     [SerializeField] private BrickBridge brickBridgePrefab;
-    private float height;
+
+    public LayerMask brickBridgeLayer;
+    public Renderer skinCharacter;
+    public ColorType colorType;
+
+    private IState<Character> _currentState;
+    private float _height;
+
     private void Start()
     {
         ChangeState(new IdleState());
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (currentState != null)
+        if (_currentState != null)
         {
-            currentState.OnExecute(this);
+            _currentState.OnExecute(this);
         }
     }
 
     public void ChangeState(IState<Character> state)
     {
-        if (currentState != null)
+        if (_currentState != null)
         {
-            currentState.OnExit(this);
+            _currentState.OnExit(this);
         }
 
-        currentState = state;
+        _currentState = state;
 
-        if (currentState != null)
+        if (_currentState != null)
         {
-            currentState.OnEnter(this);
+            _currentState.OnEnter(this);
         }
     }
 
-    public void CheckStairs()
+    protected void RemoveBrick()
+    {
+        if (brickCharactors.Count == 0) return;
+        /*int lastIndex = brickCharactors.Count - 1;
+
+        // Lấy phần tử cuối cùng
+        var lastElement = brickCharactors[lastIndex];
+
+        // Loại bỏ phần tử cuối cùng khỏi danh sách
+        brickCharactors.RemoveAt(lastIndex);
+        Destroy(lastElement);*/
+        // Xử lý phần tử (ví dụ: đưa vào pool)
+        //SimplePool.Despawn(lastElement);
+
+        if (brickCharactors.Count == 0)
+        {
+            Debug.LogWarning("No bricks in the list to remove.");
+            return;
+        }
+
+        // Lấy phần tử cuối cùng trong danh sách
+        BrickCharacter newBrick = brickCharactors[brickCharactors.Count - 1];
+
+        // Xóa viên gạch ra khỏi danh sách
+        brickCharactors.RemoveAt(brickCharactors.Count - 1);
+
+        // Hủy đối tượng viên gạch
+        Destroy(newBrick.gameObject);
+    }
+
+    /*public void CheckStairs()
     {
         Debug.DrawRay(TF.position, Vector3.down, Color.red, 5f);
         RaycastHit hit;
@@ -55,7 +88,7 @@ public class Character : GameUnit
             brickBride.SetActiceStairs();
             brickBride.ChangeColor(this.colorType);
         }
-    }
+    }*/
     public void SetColor(ColorType color)
     {
         this.colorType = color;
@@ -73,15 +106,16 @@ public class Character : GameUnit
         if (!other.CompareTag(CacheString.Tag_Brick)) return;
         Brick brick = Cache.GetBrick(other);
         if (brick.colorType != colorType) return;
-        other.gameObject.SetActive(false);
-        height = 0.3f;
+        brick.gameObject.SetActive(false);
+        Invoke("SetActiceBrick", 5f);
+        _height = 0.3f;
         BrickCharacter newBrick = Instantiate(brickCharacterPrefab, brickContainer);
         if (newBrick != null)
         {
             Debug.Log("New brick created successfully.");
             brickCharactors.Add(newBrick);
             newBrick.ChangeColor(colorDataSO.GetMat(colorType));
-            newBrick.transform.localPosition = brickCharactors.Count * height * Vector3.up;
+            newBrick.transform.localPosition = brickCharactors.Count * _height * Vector3.up;
             Debug.Log("New brick added to list successfully.");
         }
         else
@@ -90,12 +124,15 @@ public class Character : GameUnit
         }
     }
 
-    private void CollideWithStair(Collider other)
+    protected void SetActiceBrick(Brick brick)
+    {
+        brick.gameObject.SetActive(true);
+    }
+
+    /*private void CollideWithStair(Collider other)
     {
         if (!other.CompareTag(CacheString.Tag_Stairs)) return;
-
-
-        /*Debug.Log("Cầu thang được chạm vào.");
+        *//*Debug.Log("Cầu thang được chạm vào.");
         stairRenderer.enabled = true;
         // Lấy Renderer của cầu thang
         //Renderer stairRenderer = other.GetComponent<Renderer>();
@@ -113,10 +150,7 @@ public class Character : GameUnit
         {
             brickBridges.Add(brickBridge);
             Debug.Log("Cầu thang được thêm vào danh sách brickBridges.");
-        }*/
-
-
-
+        }*//*
 
         // Kiểm tra xem danh sách có phần tử nào không
         if (brickCharactors.Count == 0)
@@ -133,11 +167,11 @@ public class Character : GameUnit
 
         // Hủy đối tượng viên gạch
         Destroy(newBrick.gameObject);
-    }
+    }*/
 
     protected void OnTriggerEnter(Collider other)
     {
         ColliderWithBrick(other);
-        CollideWithStair(other);
+        //CollideWithStair(other);
     }
 }

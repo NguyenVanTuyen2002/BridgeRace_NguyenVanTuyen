@@ -15,4 +15,6 @@ public class Brick : GameUnit
         this.colorType = color;
         renderer0.material = colorDataSO.GetMat(color);
     }
+
+
 }

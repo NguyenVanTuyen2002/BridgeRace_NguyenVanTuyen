@@ -11,7 +11,7 @@ public class LevelManager : MonoBehaviour
     public Vector3 startPosition;
     public Brick brickPrefab;
     public List<Brick> brickList;
-    Brick brick;
+    public Brick brick;
     void Start()
     {
         SpawnGrid();
@@ -30,10 +30,6 @@ public class LevelManager : MonoBehaviour
                 // Tạo đối tượng
                 brick = SimplePool.Spawn<Brick>(brickPrefab, position, Quaternion.identity);
                 brickList.Add(brick);
-                //ColorType randomColor = (Random.value > 0.25f) ? ColorType.Red : ColorType.Black;
-                //brick.ChangeColor(randomColor); 
-                
-                
             }
         }
     }
