@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Cache
@@ -26,6 +27,18 @@ public class Cache
         }
 
         return bricks[collider];
+    }
+
+    private static Dictionary<Collider, Door> doors = new Dictionary<Collider, Door>();
+
+    public static Door GetDoor(Collider collider)
+    {
+        if (!doors.ContainsKey(collider))
+        {
+            doors.Add(collider, collider.GetComponent<Door>());
+        }
+
+        return doors[collider];
     }
 
 

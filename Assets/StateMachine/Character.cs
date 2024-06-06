@@ -51,23 +51,6 @@ public class Character : GameUnit
     protected void RemoveBrick()
     {
         if (brickCharactors.Count == 0) return;
-        /*int lastIndex = brickCharactors.Count - 1;
-
-        // Lấy phần tử cuối cùng
-        var lastElement = brickCharactors[lastIndex];
-
-        // Loại bỏ phần tử cuối cùng khỏi danh sách
-        brickCharactors.RemoveAt(lastIndex);
-        Destroy(lastElement);*/
-        // Xử lý phần tử (ví dụ: đưa vào pool)
-        //SimplePool.Despawn(lastElement);
-
-        if (brickCharactors.Count == 0)
-        {
-            Debug.LogWarning("No bricks in the list to remove.");
-            return;
-        }
-
         // Lấy phần tử cuối cùng trong danh sách
         BrickCharacter newBrick = brickCharactors[brickCharactors.Count - 1];
 
@@ -78,17 +61,6 @@ public class Character : GameUnit
         Destroy(newBrick.gameObject);
     }
 
-    /*public void CheckStairs()
-    {
-        Debug.DrawRay(TF.position, Vector3.down, Color.red, 5f);
-        RaycastHit hit;
-        if (Physics.Raycast(TF.position, Vector3.down, out hit, 5f, brickBridgeLayer))
-        {
-            BrickBridge brickBride = Cache.GetBrickBridge(hit.collider);
-            brickBride.SetActiceStairs();
-            brickBride.ChangeColor(this.colorType);
-        }
-    }*/
     public void SetColor(ColorType color)
     {
         this.colorType = color;
@@ -100,28 +72,10 @@ public class Character : GameUnit
         }
     }
 
-    protected void ColliderWithBrick(Collider other)
+    private IEnumerator SetActiceBrickAfterDelay(Brick brick, float delay)
     {
-        Debug.Log("hit");
-        if (!other.CompareTag(CacheString.Tag_Brick)) return;
-        Brick brick = Cache.GetBrick(other);
-        if (brick.colorType != colorType) return;
-        brick.gameObject.SetActive(false);
-        Invoke("SetActiceBrick", 5f);
-        _height = 0.3f;
-        BrickCharacter newBrick = Instantiate(brickCharacterPrefab, brickContainer);
-        if (newBrick != null)
-        {
-            Debug.Log("New brick created successfully.");
-            brickCharactors.Add(newBrick);
-            newBrick.ChangeColor(colorDataSO.GetMat(colorType));
-            newBrick.transform.localPosition = brickCharactors.Count * _height * Vector3.up;
-            Debug.Log("New brick added to list successfully.");
-        }
-        else
-        {
-            Debug.LogError("Failed to create new brick.");
-        }
+        yield return new WaitForSeconds(delay);
+        SetActiceBrick(brick);
     }
 
     protected void SetActiceBrick(Brick brick)
@@ -129,49 +83,69 @@ public class Character : GameUnit
         brick.gameObject.SetActive(true);
     }
 
-    /*private void CollideWithStair(Collider other)
+    protected void ColliderWithBrick(Collider other)
     {
-        if (!other.CompareTag(CacheString.Tag_Stairs)) return;
-        *//*Debug.Log("Cầu thang được chạm vào.");
-        stairRenderer.enabled = true;
-        // Lấy Renderer của cầu thang
-        //Renderer stairRenderer = other.GetComponent<Renderer>();
-        if (stairRenderer.enabled == false)
+        if (!other.CompareTag(CacheString.Tag_Brick)) return;
+        Brick brick = Cache.GetBrick(other);
+        if (brick.colorType != colorType) return;
+        brick.gameObject.SetActive(false);
+        StartCoroutine(SetActiceBrickAfterDelay(brick, 5f));
+        _height = 0.3f;
+        BrickCharacter newBrick = Instantiate(brickCharacterPrefab, brickContainer);
+        if (newBrick != null)
         {
-            stairRenderer.enabled = true;
-            // Đổi màu cầu thang thành màu của player
-            stairRenderer.material = colorDataSO.GetMat(colorType);
+            brickCharactors.Add(newBrick);
+            newBrick.ChangeColor(colorDataSO.GetMat(colorType));
+            newBrick.transform.localPosition = brickCharactors.Count * _height * Vector3.up;
         }
-
-        // Thêm cầu thang vào danh sách brickBridges nếu nó chưa có trong danh sách
-        BrickBridge brickBridge =
-            other.GetComponent<BrickBridge>();
-        if (brickBridge != null && !brickBridges.Contains(brickBridge))
+        else
         {
-            brickBridges.Add(brickBridge);
-            Debug.Log("Cầu thang được thêm vào danh sách brickBridges.");
-        }*//*
-
-        // Kiểm tra xem danh sách có phần tử nào không
-        if (brickCharactors.Count == 0)
-        {
-            Debug.LogWarning("No bricks in the list to remove.");
-            return;
+            Debug.LogError("Failed to create new brick.");
         }
+    }
 
-        // Lấy phần tử cuối cùng trong danh sách
-        BrickCharacter newBrick = brickCharactors[brickCharactors.Count - 1];
+    protected void ColliderWithDoor(Collider other)
+    {
+        if (!other.CompareTag(CacheString.Tag_Door)) return;
 
-        // Xóa viên gạch ra khỏi danh sách
-        brickCharactors.RemoveAt(brickCharactors.Count - 1);
+        Door doors = Cache.GetDoor(other);
 
-        // Hủy đối tượng viên gạch
-        Destroy(newBrick.gameObject);
-    }*/
+        ActivateBricksWithSameColor(colorType);
+        SetBricksToSecondGrid(colorType);
+    }
+
+    protected void ActivateBricksWithSameColor(ColorType color)
+    {
+        // Duyệt qua danh sách brickListLv2 để kích hoạt các viên gạch có màu trùng khớp
+        Platform platform = FindObjectOfType<Platform>();
+        if (platform != null)
+        {
+            foreach (var brick in platform.brickListLv2)
+            {
+                if (brick.colorType == color)
+                {
+                    brick.gameObject.SetActive(true);
+                }
+            }
+        }
+    }
+
+    protected void SetBricksToSecondGrid(ColorType color)
+    {
+        Brick[] allBricks = FindObjectsOfType<Brick>();
+        foreach (var brick in allBricks)
+        {
+            if (brick.colorType == color)
+            {
+                brick.IsInSecondGrid = true; // Set the brick as part of the second grid
+            }
+        }
+    }
+
 
     protected void OnTriggerEnter(Collider other)
     {
         ColliderWithBrick(other);
-        //CollideWithStair(other);
+        ColliderWithDoor(other);
     }
 }
