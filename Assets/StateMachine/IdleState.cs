@@ -2,21 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : IState<Character>
+public class IdleState : IState<Bot>
 {
-    public void OnEnter(Character t)
+    public void OnEnter(Bot t)
     {
 
     }
 
-    public void OnExecute(Character t)
+    public void OnExecute(Bot t)
+    {
+        t.FindBrick();
+        t.ChangeState(new PatrolState());
+    }
+
+    public void OnExit(Bot t)
     {
 
     }
-
-    public void OnExit(Character t)
-    {
-
-    }
-
 }

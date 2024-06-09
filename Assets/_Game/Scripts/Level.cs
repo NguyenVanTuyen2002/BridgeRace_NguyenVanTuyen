@@ -2,16 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Level : MonoBehaviour
+public class Level : Singleton<Level>
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] public List<Platform> platforms;
 
-    // Update is called once per frame
-    void Update()
+    public List<Transform> startPoint;
+    public Transform finishPoint;
+
+    private void Start()
     {
         
     }

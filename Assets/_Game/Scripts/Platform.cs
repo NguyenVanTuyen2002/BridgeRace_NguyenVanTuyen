@@ -10,15 +10,18 @@ public class Platform : MonoBehaviour
     public Vector3 startPosition;
     public Vector3 startPosition_2;
     public Brick brickPrefab;
-    public List<Brick> brickList;
-    public List<Brick> brickListLv2;
+    public List<Brick> brickList = new List<Brick>();
+    public List<Brick> brickListLv2 = new List<Brick>();
     public Brick brick;
+    public List<ColorType> colorTypes = new List<ColorType>();
+    public ColorDataSO colorDataSO;
 
+    private void Awake()
+    {
+        //colorTypes = colorDataSO.GetRandomEnumColors(4);
+    }
     void Start()
     {
-        brickList = new List<Brick>();
-        brickListLv2 = new List<Brick>();
-
         SpawnGrid(startPosition, brickList); // Bricks tại startPosition sẽ được kích hoạt
         SpawnGrid(startPosition_2, brickListLv2); // Bricks tại startPosition_2 sẽ được kích hoạt
         SetBrickColor();
@@ -26,7 +29,7 @@ public class Platform : MonoBehaviour
         SetBricksInactive(brickListLv2);
     }
 
-    void SetBricksInactive(List<Brick> bricks)
+    public void SetBricksInactive(List<Brick> bricks)
     {
         foreach (var brick in bricks)
         {
@@ -34,7 +37,7 @@ public class Platform : MonoBehaviour
         }
     }
 
-    void SpawnGrid(Vector3 startPosition, List<Brick> brickList)
+    public void SpawnGrid(Vector3 startPosition, List<Brick> brickList)
     {
         for (int i = 0; i < rows; i++)
         {
@@ -49,24 +52,53 @@ public class Platform : MonoBehaviour
         }
     }
 
-    void SetBrickColor()
+    public void SetBrickColor()
     {
-        GameManager.Ins.ShuffleList(brickList);
-        GameManager.Ins.ShuffleList(brickListLv2);
+        ShuffleList(brickList);
+        ShuffleList(brickListLv2);
 
         int z = 0;
         ColorBricks(brickList, ref z);
         ColorBricks(brickListLv2, ref z);
     }
 
-    void ColorBricks(List<Brick> bricks, ref int z)
+    public void ColorBricks(List<Brick> bricks, ref int z)
     {
         foreach (var brick in bricks)
         {
             int k = z % 4;
-            brick.ChangeColor(GameManager.Ins.colorTypes[k]);
-            Debug.Log(k);
+            brick.ChangeColor(LevelManager.Ins.colorTypes[k]);
+            //brick.ChangeColor(colorTypes[k]);
+            //brick.ChangeColor();
             z++;
         }
+    }
+
+    public List<T> ShuffleList<T>(List<T> list)
+    {
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+        return list;
+    }
+
+    public List<Brick> GetBrickByColor(ColorType type)
+    {
+        List<Brick> bricks = new List<Brick>();
+        for (int i = 0; i < brickList.Count; i++)
+        {
+            if (brickList[i].colorType == type)
+            {
+                bricks.Add(brickList[i]);
+            }
+        }
+        return bricks;
     }
 }

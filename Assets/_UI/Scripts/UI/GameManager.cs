@@ -11,9 +11,7 @@ public class GameManager : Singleton<GameManager>
     //private static GameState gameState = GameState.MainMenu;
 
     public ColorDataSO colorDataSO;
-    public Character player;
     public List<ColorType> colorTypes = new List<ColorType>();
-    
 
     // Start is called before the first frame update
     protected void Awake()
@@ -37,9 +35,6 @@ public class GameManager : Singleton<GameManager>
         //ChangeState(GameState.MainMenu);
 
         //UIManager.Ins.OpenUI<MianMenu>();
-
-
-
     }
 
     //public static void ChangeState(GameState state)
@@ -51,23 +46,33 @@ public class GameManager : Singleton<GameManager>
     //{
     //    return gameState == state;
     //}
-    private void OnInit()
+
+    /*private void OnInit()
     {
         colorTypes = colorDataSO.GetListColor();
-        player.SetColor(colorTypes[0]);
-    }
-    public List<T> ShuffleList<T>(List<T> list)
+        // Assign the first color to the player
+        //player.SetColor(colorTypes[0]);
+        // Assign the second color to the bot
+        //bot.SetColor(colorTypes[1]);
+    }*/
+
+    private void OnInit()
     {
-        System.Random rng = new System.Random();
-        int n = list.Count;
-        while (n > 1)
-        {
-            n--;
-            int k = rng.Next(n + 1);
-            T value = list[k];
-            list[k] = list[n];
-            list[n] = value;
-        }
-        return list;
+        colorTypes = colorDataSO.GetRandomEnumColors(4);
+        //AssignColorsToCharacters();
     }
+
+    /*private void AssignColorsToCharacters()
+    {
+        // Lấy danh sách màu từ ColorDataSO
+        var colors = colorDataSO.GetRandomEnumColors(4);
+
+        // Gán màu cho player và bot
+        LevelManager.Ins.player.SetColor(colors[0]);
+
+        for (int i = 0; i < LevelManager.Ins.bots.Count; i++)
+        {
+            LevelManager.Ins.bots[i].SetColor(colors[i + 1]);
+        }
+    }*/
 }

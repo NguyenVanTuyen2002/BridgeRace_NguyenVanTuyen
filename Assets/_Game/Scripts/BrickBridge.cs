@@ -13,7 +13,7 @@ public class BrickBridge : MonoBehaviour
     {
         renderer0.enabled = false;
     }
-    
+
     public void SetActiceStairs()
     {
         if (renderer0.enabled == false)

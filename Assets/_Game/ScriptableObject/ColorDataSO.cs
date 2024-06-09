@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -12,19 +13,27 @@ public class ColorDataSO : ScriptableObject
 
     public Material GetMat(ColorType type)
     {
-        return mats[(int)type];
+        return mats[((int)type)];
     }
-    public List<ColorType> GetListColor()
-    {
-        var colors = Enum.GetValues(typeof(ColorType))
-                         .Cast<ColorType>()
-                         .Where(c => c != ColorType.None)
-                         .ToList();
-        var randomColors = GameManager.Ins.ShuffleList(colors);
 
-        // Select the first four colors
-        var selectedColors = randomColors.Take(4).ToList();
+    public List<ColorType> GetRandomEnumColors(int numberOfColors)
+    {
+        // Lấy tất cả các giá trị của enum, loại bỏ giá trị None
+        List<ColorType> colorValues = new List<ColorType>((ColorType[])Enum.GetValues(typeof(ColorType)));
+        colorValues.Remove(ColorType.None);
+        List<ColorType> selectedColors = new List<ColorType>();
+        System.Random random = new System.Random();
+
+        while (selectedColors.Count < numberOfColors && colorValues.Count > 0)
+        {
+            int randomIndex = random.Next(0, colorValues.Count);
+
+            // Chọn màu ngẫu nhiên và thêm vào danh sách
+            selectedColors.Add(colorValues[randomIndex]);
+            // Loại bỏ màu đã chọn để không chọn lại
+            colorValues.RemoveAt(randomIndex);
+        }
+
         return selectedColors;
     }
-    
 }

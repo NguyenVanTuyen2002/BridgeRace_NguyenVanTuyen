@@ -8,11 +8,10 @@ public class Brick : GameUnit
 
     public List<Brick> bricks = new List<Brick>();
     public ColorType colorType;
-    public bool IsInSecondGrid { get; set; }
-
+    //public bool IsInSecondGrid { get; set; }
     private void Start()
     {
-        
+        //OnInit();
     }
     public void ChangeColor(ColorType color)
     {
@@ -20,7 +19,13 @@ public class Brick : GameUnit
         renderer0.material = colorDataSO.GetMat(color);
     }
 
-    public void ActiveColors(ColorType colorType)
+    /*public void OnInit()
+    {
+        var colors = colorDataSO.GetListColor();
+        ChangeColor(colors[0]);
+    }*/
+
+    /*public void ActiveColors(ColorType colorType)
     {
         for (int i = 0; i < bricks.Count; i++)
         {
@@ -29,5 +34,5 @@ public class Brick : GameUnit
                 bricks[i].gameObject.SetActive(true);
             }
         }
-    }
+    }*/
 }

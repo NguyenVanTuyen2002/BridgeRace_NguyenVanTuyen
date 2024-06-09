@@ -146,7 +146,7 @@ public enum PoolType
     None,
 
     Brick,
-    bot,
+    Bot,
 }
 
 

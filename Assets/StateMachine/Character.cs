@@ -10,43 +10,56 @@ public class Character : GameUnit
     [SerializeField] private List<SkinnedMeshRenderer> renderers;
     [SerializeField] private BrickCharacter brickCharacterPrefab;
     [SerializeField] private Transform brickContainer;
-    [SerializeField] protected List<BrickCharacter> brickCharactors = new List<BrickCharacter>();
+    [SerializeField] public List<BrickCharacter> brickCharactors = new List<BrickCharacter>();
     [SerializeField] private BrickBridge brickBridgePrefab;
 
-    public LayerMask brickBridgeLayer;
-    public Renderer skinCharacter;
+    public string currentAnimName;
+    public Animator anim;
     public ColorType colorType;
 
-    private IState<Character> _currentState;
     private float _height;
+    private bool isSecondGridActive = false;
 
     private void Start()
     {
-        ChangeState(new IdleState());
+        //OnInit();       
     }
 
     private void Update()
     {
-        if (_currentState != null)
-        {
-            _currentState.OnExecute(this);
-        }
+
     }
 
-    public void ChangeState(IState<Character> state)
+    public void ChangeAnim(string animName)
     {
-        if (_currentState != null)
+        if (currentAnimName != animName)
         {
-            _currentState.OnExit(this);
-        }
-
-        _currentState = state;
-
-        if (_currentState != null)
-        {
-            _currentState.OnEnter(this);
+            anim.ResetTrigger(animName);
+            currentAnimName = animName;
+            anim.SetTrigger(currentAnimName);
         }
     }
+
+    /*public void OnInit()
+    {
+        var colors = colorDataSO.GetListColor();
+
+        SetColor(colors[0]);
+    }*/
+
+    public void SetColor(ColorType colorType)
+    {
+        this.colorType = colorType;
+
+        //Material newMaterial = colorDataSO.GetMat(color);
+        foreach (var renderer in renderers)
+        {
+            //renderer.material = newMaterial;
+            renderer.material = LevelManager.Ins.colorDataSO.GetMat(colorType);
+        }
+    }
+
+
 
     protected void RemoveBrick()
     {
@@ -59,17 +72,6 @@ public class Character : GameUnit
 
         // Hủy đối tượng viên gạch
         Destroy(newBrick.gameObject);
-    }
-
-    public void SetColor(ColorType color)
-    {
-        this.colorType = color;
-
-        Material newMaterial = colorDataSO.GetMat(color);
-        foreach (var renderer in renderers)
-        {
-            renderer.material = newMaterial;
-        }
     }
 
     private IEnumerator SetActiceBrickAfterDelay(Brick brick, float delay)
@@ -104,14 +106,14 @@ public class Character : GameUnit
         }
     }
 
-    protected void ColliderWithDoor(Collider other)
+    protected virtual void ColliderWithDoor(Collider other)
     {
         if (!other.CompareTag(CacheString.Tag_Door)) return;
 
         Door doors = Cache.GetDoor(other);
 
         ActivateBricksWithSameColor(colorType);
-        SetBricksToSecondGrid(colorType);
+        isSecondGridActive = true;
     }
 
     protected void ActivateBricksWithSameColor(ColorType color)
@@ -130,7 +132,7 @@ public class Character : GameUnit
         }
     }
 
-    protected void SetBricksToSecondGrid(ColorType color)
+    /*protected void SetBricksToSecondGrid(ColorType color)
     {
         Brick[] allBricks = FindObjectsOfType<Brick>();
         foreach (var brick in allBricks)
@@ -140,10 +142,10 @@ public class Character : GameUnit
                 brick.IsInSecondGrid = true; // Set the brick as part of the second grid
             }
         }
-    }
+    }*/
 
 
-    protected void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         ColliderWithBrick(other);
         ColliderWithDoor(other);

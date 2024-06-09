@@ -14,17 +14,7 @@ public class Player : Character
 
     private float _v;
     private float _h;
-
-    //[SerializeField] private List<BrickBridge> brickBridges = new List<BrickBridge>();
-
-    //protected ColorType colorType;
-
     private Vector3 _moveMent;
-
-    private void Start()
-    {
-         //ChangeColor(ColorType.Red);
-    }
 
     void Update()
     {
@@ -70,7 +60,7 @@ public class Player : Character
                 if (brickCharactors.Count > 0)
                 {
                     // gạch không màu hoặc màu khác player
-                    if (brickBridge.colorType == ColorType.None || brickBridge.colorType != this.colorType && _v < 0)
+                    if (brickBridge.colorType == ColorType.None || brickBridge.colorType != this.colorType && _v > 0)
                     {
                         brickBridge.ChangeColor(this.colorType);
                         brickBridge.SetActiceStairs();
