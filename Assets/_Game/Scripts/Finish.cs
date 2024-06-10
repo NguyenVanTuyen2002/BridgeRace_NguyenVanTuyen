@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class Finish : MonoBehaviour
 {
-    
+    public List<FinishColumn> finishColonms;
+
 }

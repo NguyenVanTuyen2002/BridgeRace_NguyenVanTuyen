@@ -1,36 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Bot : Character
 {
-    /*public override void OnInit()
-    {
-        base.OnInit();
-        ChangeState(new IdleState());
-        SetColor(colorType);
-    }*/
     [SerializeField] public NavMeshAgent agent;
     public Transform posRaycastCheckStair;
-    //public Transform pos1;
     public Platform currentPlatform;
     public Brick targetBrick;
 
     private IState<Bot> _currentState;
     private bool isSecondGridActive = false;
 
+    private IdleState idleState;
+    private BotToFinish botToFinishState;
 
+    public IdleState IdleState { get { return idleState; } }    
     public NavMeshAgent Agent { get => agent; set => agent = value; }
     public List<Brick> bricks;
-    public void Move(Vector3 pos)
-    {
-        // truyen vao vi tri finish
-        Agent.SetDestination(pos);
-    }
 
     private void Start()
     {
+        OnInit();
+        idleState = new IdleState();    
         ChangeState(new IdleState());
     }
     private void Update()
@@ -39,6 +33,30 @@ public class Bot : Character
         {
             _currentState.OnExecute(this);
         }
+    }
+
+    public void OnInit()
+    {
+        TF.rotation = Quaternion.Euler(0, 0, 0);
+
+        agent.velocity = agent.velocity.normalized;
+
+        if (LevelManager.Ins.currentLevel != null)
+        {
+            currentPlatform = LevelManager.Ins.currentLevel.platforms[0];
+        }
+
+        gameObject.SetActive(true);
+        ClearBrick();
+
+        ChangeAnim("Idle");
+        Invoke(nameof(IdleState), 0f);
+    }
+
+    public void Move(Vector3 pos)
+    {
+        // truyen vao vi tri finish
+        Agent.SetDestination(pos);
     }
 
     public void CheckStair()
@@ -109,6 +127,11 @@ public class Bot : Character
         }
     }
 
+    public Vector3 FindNearestBrick()
+    {
+        return Vector3.zero;
+    }
+
     protected override void ColliderWithDoor(Collider other)
     {
         if (!other.CompareTag(CacheString.Tag_Door)) return;
@@ -125,5 +148,26 @@ public class Bot : Character
         base.ColliderWithBrick(other);
         ColliderWithDoor(other);
         FindBrick();
+    }
+
+    public bool IsEnoughBrick(int value)
+    {
+        return brickCharactors.Count > value;
+    }
+
+    internal bool IsOutOfTime(float timer)
+    {
+        return true;
+    }
+
+    public void ChangeStateToPatrolState(float randomTime)
+    {
+        StartCoroutine(CoChangeStateToPatrolState(randomTime));
+    }
+
+    private IEnumerator CoChangeStateToPatrolState(float randomTime)
+    {
+        yield return new WaitForSeconds(randomTime);
+        ChangeState(botToFinishState);
     }
 }

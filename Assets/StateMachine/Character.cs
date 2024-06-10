@@ -20,16 +20,6 @@ public class Character : GameUnit
     private float _height;
     private bool isSecondGridActive = false;
 
-    private void Start()
-    {
-        //OnInit();       
-    }
-
-    private void Update()
-    {
-
-    }
-
     public void ChangeAnim(string animName)
     {
         if (currentAnimName != animName)
@@ -59,7 +49,30 @@ public class Character : GameUnit
         }
     }
 
+    protected void ClearBrick()
+    {
+        // Kiểm tra nếu danh sách rỗng, thoát khỏi hàm
+        if (brickCharactors.Count == 0) return;
 
+        // Duyệt qua tất cả các phần tử trong danh sách
+        for (int i = brickCharactors.Count - 1; i >= 0; i--)
+        {
+            // Lấy viên gạch từ danh sách
+            BrickCharacter newBrick = brickCharactors[i];
+
+            // Xóa viên gạch ra khỏi danh sách
+            brickCharactors.RemoveAt(i);
+
+            // Hủy đối tượng viên gạch
+            Destroy(newBrick.gameObject);
+        }
+    }
+
+    private void ShowUIWin()
+    {
+        UIManager.Ins.OpenUI<Win>();
+        UIManager.Ins.CloseUI<GamePlay>();
+    }
 
     protected void RemoveBrick()
     {
@@ -132,18 +145,48 @@ public class Character : GameUnit
         }
     }
 
-    /*protected void SetBricksToSecondGrid(ColorType color)
+    protected void ColliderWithFinishPoint(Collider other)
     {
-        Brick[] allBricks = FindObjectsOfType<Brick>();
-        foreach (var brick in allBricks)
-        {
-            if (brick.colorType == color)
-            {
-                brick.IsInSecondGrid = true; // Set the brick as part of the second grid
-            }
-        }
-    }*/
+        if (!other.CompareTag(CacheString.Tag_Door)) return;
+        Finish finish = Cache.GetFinish(other);
 
+        if (finish != null)
+        {
+            //Set player và bot 
+            SetPlayerAndBotsOnWin(finish);
+
+            Debug.Log("win");
+
+            //Show Ui Win
+            Invoke(nameof(ShowUIWin), 2f);
+        }
+    }
+
+    private void SetPlayerAndBotsOnWin(Finish finish)
+    {
+
+        //Set Player
+        //isMoving = false;
+        ChangeAnim("Idle");
+        GameManager.ChangeState(GameState.Win);
+
+        finish.finishColonms[0].ChangeColor(colorType);
+        TF.position = finish.finishColonms[0].GetPoint();
+        TF.rotation = Quaternion.Euler(0, 180f, 0);
+        ClearBrick();
+
+
+        //Set Bot
+        LevelManager.Ins.ChangeStateWinnerState();
+        List<Bot> botCtls = LevelManager.Ins.bots;
+        for (int i = 0; i < 2; i++)
+        {
+            finish.finishColonms[i + 1].ChangeColor(botCtls[i].colorType);
+            botCtls[i].TF.position = finish.finishColonms[i + 1].GetPoint();
+            botCtls[i].TF.rotation = Quaternion.Euler(0, 180f, 0);
+            botCtls[i].ClearBrick();
+        }
+    }
 
     protected virtual void OnTriggerEnter(Collider other)
     {

@@ -8,7 +8,7 @@ public class Player : Character
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private float movementSpeed = 8f;
-    [SerializeField] private Animator anim;
+    //[SerializeField] private Animator anim;
     [SerializeField] private MeshRenderer stairRenderer;
     [SerializeField] private Transform posRaycastCheckStair;
 
@@ -16,10 +16,22 @@ public class Player : Character
     private float _h;
     private Vector3 _moveMent;
 
+    private void Start()
+    {
+        OnInit();
+    }
+
     void Update()
     {
         Move();
         CheckStair();
+    }
+
+    public void OnInit()
+    {
+        TF.rotation = Quaternion.Euler(0, 0, 0);
+        ClearBrick();
+        gameObject.SetActive(true);
     }
 
     private void Move()

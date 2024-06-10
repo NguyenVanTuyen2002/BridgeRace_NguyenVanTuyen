@@ -9,6 +9,11 @@ public class FinishColumn : MonoBehaviour
 
     public void ChangeColor(ColorType color)
     {
-        //meshRenderer.material = LevelManager.
+        meshRenderer.material = LevelManager.Ins.colorDataSO.GetMat(color);
+    }
+
+    public Vector3 GetPoint()
+    {
+        return point.position;
     }
 }

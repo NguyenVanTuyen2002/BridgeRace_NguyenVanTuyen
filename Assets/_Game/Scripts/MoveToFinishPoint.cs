@@ -11,8 +11,8 @@ public class MoveToFinishPoint : IState<Bot>
 
     public void OnExecute(Bot t)
     {
-        //Vector3 pointNavMesh = LevelManager.Ins.currentLevel.finishPoint.position;
-        Vector3 pointNavMesh = Level.Ins.finishPoint.position;
+        Vector3 pointNavMesh = LevelManager.Ins.currentLevel.finishPoint.position;
+        //Vector3 pointNavMesh = Level.Ins.finishPoint.position;
         t.Move(pointNavMesh);
         Debug.Log("tim diem");
 

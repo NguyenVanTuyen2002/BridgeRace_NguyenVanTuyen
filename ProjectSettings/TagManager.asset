@@ -7,14 +7,15 @@ TagManager:
   - Stairs
   - Brick
   - Door
+  - Bot
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
+  - Bot
   - 
   - 
   - 
