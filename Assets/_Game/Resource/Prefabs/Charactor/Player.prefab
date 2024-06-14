@@ -724,7 +724,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 684851186195403010, guid: e0935d9a70b37cc43a4425685d024290, type: 3}
+  - {fileID: 2100000, guid: d63086617a0b76748ad6922127ad3d60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -983,7 +983,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 684851186195403010, guid: e0935d9a70b37cc43a4425685d024290, type: 3}
+  - {fileID: 2100000, guid: d63086617a0b76748ad6922127ad3d60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1162,7 +1162,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 684851186195403010, guid: e0935d9a70b37cc43a4425685d024290, type: 3}
+  - {fileID: 2100000, guid: d63086617a0b76748ad6922127ad3d60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1421,7 +1421,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 684851186195403010, guid: e0935d9a70b37cc43a4425685d024290, type: 3}
+  - {fileID: 2100000, guid: d63086617a0b76748ad6922127ad3d60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1509,8 +1509,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6828585093027730083}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.3442333, z: 0, w: 0.93888414}
-  m_LocalPosition: {x: -6.415, y: 0.7, z: 13.2}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 10, y: 0, z: -13.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1594,15 +1594,11 @@ MonoBehaviour:
   brickContainer: {fileID: 5495859211757930199}
   brickCharactors: []
   brickBridgePrefab: {fileID: -4114980531017663164, guid: 168cee313d959cc4aaa13ed74759e8a3, type: 3}
-  brickBridgeLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  skinCharacter: {fileID: 0}
-  colorType: 0
+  currentAnimName: 
+  anim: {fileID: 2319051519047876656}
+  colorType: 6
   joystick: {fileID: 0}
   movementSpeed: 8
-  anim: {fileID: 2319051519047876656}
-  colorDataSO: {fileID: 11400000, guid: ea25131f6bc001142a01a9f27b9bfc12, type: 2}
   stairRenderer: {fileID: 100583163844824465, guid: 168cee313d959cc4aaa13ed74759e8a3, type: 3}
   posRaycastCheckStair: {fileID: 5798558610204635123}
 --- !u!1 &6942038108720036105
@@ -1688,7 +1684,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 684851186195403010, guid: e0935d9a70b37cc43a4425685d024290, type: 3}
+  - {fileID: 2100000, guid: d63086617a0b76748ad6922127ad3d60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2244,7 +2240,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 684851186195403010, guid: e0935d9a70b37cc43a4425685d024290, type: 3}
+  - {fileID: 2100000, guid: d63086617a0b76748ad6922127ad3d60, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

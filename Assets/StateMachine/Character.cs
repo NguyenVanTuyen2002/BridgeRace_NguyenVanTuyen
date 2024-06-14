@@ -30,18 +30,10 @@ public class Character : GameUnit
         }
     }
 
-    /*public void OnInit()
-    {
-        var colors = colorDataSO.GetListColor();
-
-        SetColor(colors[0]);
-    }*/
-
     public void SetColor(ColorType colorType)
     {
         this.colorType = colorType;
 
-        //Material newMaterial = colorDataSO.GetMat(color);
         foreach (var renderer in renderers)
         {
             //renderer.material = newMaterial;
@@ -49,7 +41,7 @@ public class Character : GameUnit
         }
     }
 
-    protected void ClearBrick()
+    public void ClearBrick()
     {
         // Kiểm tra nếu danh sách rỗng, thoát khỏi hàm
         if (brickCharactors.Count == 0) return;
@@ -66,12 +58,6 @@ public class Character : GameUnit
             // Hủy đối tượng viên gạch
             Destroy(newBrick.gameObject);
         }
-    }
-
-    private void ShowUIWin()
-    {
-        UIManager.Ins.OpenUI<Win>();
-        UIManager.Ins.CloseUI<GamePlay>();
     }
 
     protected void RemoveBrick()
@@ -142,49 +128,6 @@ public class Character : GameUnit
                     brick.gameObject.SetActive(true);
                 }
             }
-        }
-    }
-
-    protected void ColliderWithFinishPoint(Collider other)
-    {
-        if (!other.CompareTag(CacheString.Tag_Door)) return;
-        Finish finish = Cache.GetFinish(other);
-
-        if (finish != null)
-        {
-            //Set player và bot 
-            SetPlayerAndBotsOnWin(finish);
-
-            Debug.Log("win");
-
-            //Show Ui Win
-            Invoke(nameof(ShowUIWin), 2f);
-        }
-    }
-
-    private void SetPlayerAndBotsOnWin(Finish finish)
-    {
-
-        //Set Player
-        //isMoving = false;
-        ChangeAnim("Idle");
-        GameManager.ChangeState(GameState.Win);
-
-        finish.finishColonms[0].ChangeColor(colorType);
-        TF.position = finish.finishColonms[0].GetPoint();
-        TF.rotation = Quaternion.Euler(0, 180f, 0);
-        ClearBrick();
-
-
-        //Set Bot
-        LevelManager.Ins.ChangeStateWinnerState();
-        List<Bot> botCtls = LevelManager.Ins.bots;
-        for (int i = 0; i < 2; i++)
-        {
-            finish.finishColonms[i + 1].ChangeColor(botCtls[i].colorType);
-            botCtls[i].TF.position = finish.finishColonms[i + 1].GetPoint();
-            botCtls[i].TF.rotation = Quaternion.Euler(0, 180f, 0);
-            botCtls[i].ClearBrick();
         }
     }
 

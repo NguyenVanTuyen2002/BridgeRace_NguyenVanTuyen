@@ -13,7 +13,6 @@ public class Bot : Character
 
     private IState<Bot> _currentState;
     private bool isSecondGridActive = false;
-
     private IdleState idleState;
     private BotToFinish botToFinishState;
 
@@ -49,7 +48,7 @@ public class Bot : Character
         gameObject.SetActive(true);
         ClearBrick();
 
-        ChangeAnim("Idle");
+        ChangeAnim(CacheString.Anim_Idle);
         Invoke(nameof(IdleState), 0f);
     }
 
@@ -57,6 +56,12 @@ public class Bot : Character
     {
         // truyen vao vi tri finish
         Agent.SetDestination(pos);
+        ChangeAnim(CacheString.Anim_Run);
+    }
+
+    public void StopMovement()
+    {
+        agent.isStopped = true;
     }
 
     public void CheckStair()
@@ -84,6 +89,7 @@ public class Bot : Character
                 }
             }
         }
+
         // Vẽ raycast trong Scene view để dễ hình dung
         Debug.DrawRay(posRaycast, Vector3.up * 5f, Color.red);
     }
@@ -107,8 +113,8 @@ public class Bot : Character
     {
         agent.velocity = agent.velocity.normalized;
 
-        // Kiểm tra biến isSecondGridActive để quyết định danh sách viên gạch nào sẽ được tìm kiếm
-        bricks = isSecondGridActive ? currentPlatform.brickListLv2 : currentPlatform.GetBrickByColor(colorType);
+        // Sử dụng biến isSecondGridActive để quyết định danh sách viên gạch nào sẽ được tìm kiếm
+        bricks = currentPlatform.GetBrickByColor(colorType, isSecondGridActive);
         Debug.Log(isSecondGridActive);
         float minDistance = float.MaxValue;
 
@@ -123,7 +129,6 @@ public class Bot : Character
                     targetBrick = bricks[i];
                 }
             }
-
         }
     }
 
@@ -143,10 +148,22 @@ public class Bot : Character
         isSecondGridActive = true;
     }
 
+    /*public void ColliderWithFinishPoint(Collider other)
+    {
+        ShowUILose();
+    }
+
+    private void ShowUILose()
+    {
+        UIManager.Ins.OpenUI<Lose>();
+        UIManager.Ins.CloseUI<GamePlay>();
+    }*/
+
     protected override void OnTriggerEnter(Collider other)
     {
         base.ColliderWithBrick(other);
         ColliderWithDoor(other);
+        //ColliderWithFinishPoint(other);
         FindBrick();
     }
 

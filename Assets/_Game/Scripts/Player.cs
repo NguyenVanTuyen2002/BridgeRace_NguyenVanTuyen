@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using static System.Drawing.Color;
 using Unity.VisualScripting;
 using UnityEngine;
+using System.Drawing;
 
 public class Player : Character
 {
     [SerializeField] private Joystick joystick;
     [SerializeField] private float movementSpeed = 8f;
-    //[SerializeField] private Animator anim;
     [SerializeField] private MeshRenderer stairRenderer;
     [SerializeField] private Transform posRaycastCheckStair;
+
+    public bool isMoving;
 
     private float _v;
     private float _h;
@@ -43,14 +44,11 @@ public class Player : Character
 
         if (!_moveMent.Equals(Vector3.zero))
         {
-            anim.SetBool("Running", true);
-            Debug.Log("run");
+            ChangeAnim(CacheString.Anim_Run);
         }
         else
         {
-            anim.SetBool("Running", false);
-            Debug.Log("idle");
-
+            ChangeAnim(CacheString.Anim_Idle);
         }
 
         transform.Translate(_moveMent, Space.World);
@@ -95,6 +93,68 @@ public class Player : Character
             }
         }
         // Vẽ raycast trong Scene view để dễ hình dung
-        Debug.DrawRay(posRaycast, Vector3.up * 5f, Color.red);
+        Debug.DrawRay(posRaycast, Vector3.up * 5f, UnityEngine.Color.red);
+    }
+
+    protected void ColliderWithFinishPoint(Collider other)
+    {
+        if (!other.CompareTag(CacheString.Tag_Finish)) return;
+        Finish finish = Cache.GetFinish(other);
+
+        if (finish != null)
+        {
+            movementSpeed = 0;
+            foreach (Bot bot in LevelManager.Ins.bots)
+            {
+                bot.Agent.isStopped = true; // Dừng NavMeshAgent của bot
+            }
+            //Set player và bot 
+            SetPlayerAndBotsOnWin(finish);
+
+
+            Debug.Log("win");
+
+            //Show Ui Win
+            Invoke(nameof(ShowUIWin), 2f);
+        }
+    }
+
+    private void SetPlayerAndBotsOnWin(Finish finish)
+    {
+
+        //Set Player
+        //isMoving = false;
+        ChangeAnim(CacheString.Anim_Idle);
+        GameManager.ChangeState(GameState.Win);
+
+        finish.finishColonms[0].ChangeColor(colorType);
+        TF.position = finish.finishColonms[0].GetPoint();
+        TF.rotation = Quaternion.Euler(0, 180f, 0);
+        ClearBrick();
+
+
+        //Set Bot
+        LevelManager.Ins.ChangeStateWinnerState();
+        List<Bot> botCtls = LevelManager.Ins.bots;
+        for (int i = 0; i < 2; i++)
+        {
+            finish.finishColonms[i + 1].ChangeColor(botCtls[i].colorType);
+            botCtls[i].TF.position = finish.finishColonms[i + 1].GetPoint();
+            botCtls[i].TF.rotation = Quaternion.Euler(0, 180f, 0);
+            botCtls[i].ClearBrick();
+        }
+    }
+
+    private void ShowUIWin()
+    {
+        UIManager.Ins.OpenUI<Win>();
+        UIManager.Ins.CloseUI<GamePlay>();
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.ColliderWithBrick(other);
+        base.ColliderWithDoor(other);
+        ColliderWithFinishPoint(other);
     }
 }

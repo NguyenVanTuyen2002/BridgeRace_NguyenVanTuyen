@@ -89,14 +89,16 @@ public class Platform : MonoBehaviour
         return list;
     }
 
-    public List<Brick> GetBrickByColor(ColorType type)
+    public List<Brick> GetBrickByColor(ColorType type, bool useSecondList = false)
     {
         List<Brick> bricks = new List<Brick>();
-        for (int i = 0; i < brickList.Count; i++)
+        List<Brick> targetList = useSecondList ? brickListLv2 : brickList;
+
+        for (int i = 0; i < targetList.Count; i++)
         {
-            if (brickList[i].colorType == type)
+            if (targetList[i].colorType == type)
             {
-                bricks.Add(brickList[i]);
+                bricks.Add(targetList[i]);
             }
         }
         return bricks;
