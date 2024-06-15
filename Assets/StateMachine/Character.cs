@@ -57,6 +57,7 @@ public class Character : GameUnit
 
             // Hủy đối tượng viên gạch
             Destroy(newBrick.gameObject);
+            //SimplePool.Despawn(newBrick.gameObject);
         }
     }
 

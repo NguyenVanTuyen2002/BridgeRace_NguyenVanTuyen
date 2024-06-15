@@ -6,8 +6,12 @@ public class MianMenu : UICanvas
 {
     public void PlayButton()
     {
-        UIManager.Ins.OpenUI<GamePlay>();
+        //UIManager.Ins.CloseAll();
+
+        GameManager.ChangeState(GameState.Playing);
         LevelManager.Ins.LoadLevel();
-        Close(0);
+
+        UIManager.Ins.CloseAll();
+        UIManager.Ins.OpenUI<GamePlay>();
     }
 }

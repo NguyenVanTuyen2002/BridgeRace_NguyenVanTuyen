@@ -148,22 +148,22 @@ public class Bot : Character
         isSecondGridActive = true;
     }
 
-    /*public void ColliderWithFinishPoint(Collider other)
+    public void ColliderWithFinishPoint(Collider other)
     {
         ShowUILose();
     }
 
     private void ShowUILose()
     {
-        UIManager.Ins.OpenUI<Lose>();
+        //UIManager.Ins.OpenUI<Lose>();
         UIManager.Ins.CloseUI<GamePlay>();
-    }*/
+    }
 
     protected override void OnTriggerEnter(Collider other)
     {
         base.ColliderWithBrick(other);
         ColliderWithDoor(other);
-        //ColliderWithFinishPoint(other);
+        ColliderWithFinishPoint(other);
         FindBrick();
     }
 

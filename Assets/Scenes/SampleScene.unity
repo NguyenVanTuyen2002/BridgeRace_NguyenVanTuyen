@@ -111,7 +111,7 @@ NavMeshSettings:
     agentSlope: 45
     agentClimb: 0.4
     ledgeDropHeight: 0
-    maxJumpAcrossDistance: 0
+    maxJumpAcrossDistance: 5.05
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
@@ -669,8 +669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18d122c0c9ab7e04198c9cc68aa8cb96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorDataSO: {fileID: 11400000, guid: ea25131f6bc001142a01a9f27b9bfc12, type: 2}
-  colorTypes: 
 --- !u!4 &1218108388
 Transform:
   m_ObjectHideFlags: 0
@@ -837,7 +835,7 @@ MonoBehaviour:
     collect: 1
   - root: {fileID: 1255150299}
     prefab: {fileID: 8210202911960144173, guid: dbef6d3d9aa816046ab2f4e44de6132d, type: 3}
-    amount: 4
+    amount: 3
     collect: 1
   Particle: []
 --- !u!4 &1560390143

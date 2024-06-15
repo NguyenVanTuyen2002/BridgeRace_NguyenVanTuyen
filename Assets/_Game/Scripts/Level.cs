@@ -8,4 +8,9 @@ public class Level : Singleton<Level>
 
     public List<Transform> startPoint;
     public Transform finishPoint;
+
+    private void Start()
+    {
+        
+    }
 }

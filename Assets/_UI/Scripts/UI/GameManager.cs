@@ -19,9 +19,6 @@ public class GameManager : Singleton<GameManager>
     //[SerializeField] CSVData csv;
     private static GameState gameState = GameState.MainMenu;
 
-    public ColorDataSO colorDataSO;
-    public List<ColorType> colorTypes = new List<ColorType>();
-
     // Start is called before the first frame update
     protected void Awake()
     {

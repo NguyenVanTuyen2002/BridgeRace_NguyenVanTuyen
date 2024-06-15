@@ -16,12 +16,12 @@ public class LevelManager : Singleton<LevelManager>
     private void Awake()
     {
         colorTypes = colorDataSO.GetRandomEnumColors(4);
-        
     }
 
     private void Start()
     {
         player.SetColor(colorTypes[0]);
+        player.gameObject.SetActive(false);
         SpawnBot(colorTypes, 3);
         indexCurrentLevel = PlayerPrefs.GetInt("Current_Level");
     }
