@@ -172,8 +172,15 @@ public class Player : Character
         ColliderWithFinishPoint(other);
     }
 
-    /*private void OnTriggerExit(Collider other)
+    /*private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        ColliderWithDoor(other);
+        //ColliderWithDoor(collision.collider);
+        if (!hit.collider.CompareTag(CacheString.Tag_Door)) return;
+
+        Door doors = Cache.GetDoor(hit.collider);
+        hit.collider.isTrigger = true;
+        StartCoroutine(doors.DisappearAndReappear());
+        ActivateBricksWithSameColor(colorType);
+        isSecondGridActive = true;
     }*/
 }
