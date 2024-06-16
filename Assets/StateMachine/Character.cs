@@ -114,6 +114,7 @@ public class Character : GameUnit
 
         ActivateBricksWithSameColor(colorType);
         isSecondGridActive = true;
+        //other.isTrigger = false;
     }
 
     protected void ActivateBricksWithSameColor(ColorType color)

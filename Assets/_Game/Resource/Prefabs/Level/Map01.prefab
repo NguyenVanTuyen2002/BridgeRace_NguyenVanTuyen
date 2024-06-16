@@ -1165,7 +1165,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2310208250705261943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2033,6 +2033,7 @@ GameObject:
   - component: {fileID: 801928249350809437}
   - component: {fileID: 2430330573247144179}
   - component: {fileID: 3036281972096027979}
+  - component: {fileID: 2900932044538483245}
   m_Layer: 0
   m_Name: Door 1
   m_TagString: Door
@@ -2126,6 +2127,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2900932044538483245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3420736372940520220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29eb125536c6b7545b597364192c448f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colDoor: {fileID: 3036281972096027979}
 --- !u!1 &3477377212760052623
 GameObject:
   m_ObjectHideFlags: 0
@@ -2779,7 +2793,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4291292743370960888}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3223,7 +3237,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4764006519377118935}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

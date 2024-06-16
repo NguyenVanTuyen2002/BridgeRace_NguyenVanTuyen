@@ -52,6 +52,23 @@ public class Platform : MonoBehaviour
         }
     }
 
+    public void DelBrick()
+    {
+        foreach(var i in brickList)
+        {
+            Destroy(i.gameObject);
+            Debug.Log("aaaa");
+        }
+
+        foreach (var i in brickListLv2)
+        {
+            Destroy(i.gameObject);
+        }
+
+        brickList.Clear();
+        brickListLv2.Clear();
+    }
+
     public void SetBrickColor()
     {
         ShuffleList(brickList);

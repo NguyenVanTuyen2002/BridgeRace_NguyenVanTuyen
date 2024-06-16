@@ -45,6 +45,11 @@ public class Bot : Character
             currentPlatform = LevelManager.Ins.currentLevel.platforms[0];
         }
 
+        
+        
+        Agent.isStopped = false; // Dừng NavMeshAgent của bot
+        
+
         gameObject.SetActive(true);
         ClearBrick();
 
@@ -150,12 +155,14 @@ public class Bot : Character
 
     public void ColliderWithFinishPoint(Collider other)
     {
+        if (!other.CompareTag(CacheString.Tag_Finish)) return;
+        Finish finish = Cache.GetFinish(other);
         ShowUILose();
     }
 
     private void ShowUILose()
     {
-        //UIManager.Ins.OpenUI<Lose>();
+        UIManager.Ins.OpenUI<Lose>();
         UIManager.Ins.CloseUI<GamePlay>();
     }
 

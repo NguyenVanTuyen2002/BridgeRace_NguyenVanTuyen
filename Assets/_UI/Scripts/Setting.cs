@@ -13,12 +13,6 @@ public class Setting : UICanvas
     public void RetryButton()
     {
         Time.timeScale = 1;
-
-        LevelManager.Ins.LoadLevel();
-
-        GameManager.ChangeState(GameState.Playing);
-
-        UIManager.Ins.CloseAll();
-        UIManager.Ins.OpenUI<GamePlay>();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

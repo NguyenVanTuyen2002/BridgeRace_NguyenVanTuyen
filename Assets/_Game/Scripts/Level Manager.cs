@@ -16,6 +16,7 @@ public class LevelManager : Singleton<LevelManager>
     private void Awake()
     {
         colorTypes = colorDataSO.GetRandomEnumColors(4);
+        //PlayerPrefs.SetInt("Current_Level", 0);
     }
 
     private void Start()
@@ -34,7 +35,7 @@ public class LevelManager : Singleton<LevelManager>
 
         //currentLevel.ShuffleListStartPoint();
 
-        ChangeStateWinnerState();
+        //ChangeStateWinnerState();
         //set vị trí cho player và bot
         setPlayerAndBot();
 
@@ -55,9 +56,18 @@ public class LevelManager : Singleton<LevelManager>
 
     public void NextLevel()
     {
+        Platform platform = FindObjectOfType<Platform>();
+        platform.DelBrick();
+
         if (currentLevel != null) Destroy(currentLevel.gameObject);
 
         indexCurrentLevel++;
+        Debug.Log(indexCurrentLevel);
+
+        if (indexCurrentLevel >= 3)
+        {
+            indexCurrentLevel = 0;
+        }
 
         PlayerPrefs.SetInt("Current_Level", indexCurrentLevel);
 
@@ -65,7 +75,7 @@ public class LevelManager : Singleton<LevelManager>
 
         //currentLevel.ShuffleListStartPoint();
 
-        ChangeStateWinnerState();
+        //ChangeStateWinnerState();
 
         //set vị trí cho player và bot
         setPlayerAndBot();
@@ -74,13 +84,13 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    public void ChangeStateWinnerState()
+    /*public void ChangeStateWinnerState()
     {
         for (int i = 0; i < bots.Count; i++)
         {
             bots[i].ChangeState(new WinnerState());
         }
-    }
+    }*/
 
     public void SpawnBot(List<ColorType> colors, int quantityBot)
     {

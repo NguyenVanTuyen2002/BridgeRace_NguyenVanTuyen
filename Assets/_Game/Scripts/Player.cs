@@ -12,6 +12,7 @@ public class Player : Character
     [SerializeField] private Transform posRaycastCheckStair;
 
     public bool isMoving;
+    private bool isSecondGridActive = false;
 
     private float _v;
     private float _h;
@@ -30,6 +31,7 @@ public class Player : Character
 
     public void OnInit()
     {
+        movementSpeed = 8f;
         TF.rotation = Quaternion.Euler(0, 0, 0);
         ClearBrick();
         gameObject.SetActive(true);
@@ -111,6 +113,7 @@ public class Player : Character
             //Set player và bot 
             SetPlayerAndBotsOnWin(finish);
 
+            
 
             Debug.Log("win");
 
@@ -134,7 +137,7 @@ public class Player : Character
 
 
         //Set Bot
-        LevelManager.Ins.ChangeStateWinnerState();
+        //LevelManager.Ins.ChangeStateWinnerState();
         List<Bot> botCtls = LevelManager.Ins.bots;
         for (int i = 0; i < 2; i++)
         {
@@ -143,6 +146,17 @@ public class Player : Character
             botCtls[i].TF.rotation = Quaternion.Euler(0, 180f, 0);
             botCtls[i].ClearBrick();
         }
+    }
+
+    protected override void ColliderWithDoor(Collider other)
+    {
+        if (!other.CompareTag(CacheString.Tag_Door)) return;
+
+        Door doors = Cache.GetDoor(other);
+        other.isTrigger = true;
+        StartCoroutine(doors.DisappearAndReappear());
+        ActivateBricksWithSameColor(colorType);
+        isSecondGridActive = true;
     }
 
     private void ShowUIWin()
@@ -154,7 +168,12 @@ public class Player : Character
     protected override void OnTriggerEnter(Collider other)
     {
         base.ColliderWithBrick(other);
-        base.ColliderWithDoor(other);
+        ColliderWithDoor(other);
         ColliderWithFinishPoint(other);
     }
+
+    /*private void OnTriggerExit(Collider other)
+    {
+        ColliderWithDoor(other);
+    }*/
 }
