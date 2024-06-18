@@ -106,10 +106,10 @@ public class Player : Character
         if (finish != null)
         {
             movementSpeed = 0;
-            foreach (Bot bot in LevelManager.Ins.bots)
+            /*foreach (Bot bot in LevelManager.Ins.bots)
             {
                 bot.Agent.isStopped = true; // Dừng NavMeshAgent của bot
-            }
+            }*/
             //Set player và bot 
             SetPlayerAndBotsOnWin(finish);
 
@@ -126,7 +126,7 @@ public class Player : Character
     {
 
         //Set Player
-        //isMoving = false;
+        isMoving = false;
         ChangeAnim(CacheString.Anim_Idle);
         GameManager.ChangeState(GameState.Win);
 
@@ -137,14 +137,16 @@ public class Player : Character
 
 
         //Set Bot
-        //LevelManager.Ins.ChangeStateWinnerState();
+        LevelManager.Ins.ChangeStateWinnerState();
         List<Bot> botCtls = LevelManager.Ins.bots;
         for (int i = 0; i < 2; i++)
         {
+            botCtls[i].Agent.enabled = false;
             finish.finishColonms[i + 1].ChangeColor(botCtls[i].colorType);
             botCtls[i].TF.position = finish.finishColonms[i + 1].GetPoint();
             botCtls[i].TF.rotation = Quaternion.Euler(0, 180f, 0);
             botCtls[i].ClearBrick();
+            botCtls[i].ChangeAnim(CacheString.Anim_Idle);
         }
     }
 

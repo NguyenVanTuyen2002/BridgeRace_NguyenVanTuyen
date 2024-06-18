@@ -7,6 +7,8 @@ public class FinishColumn : MonoBehaviour
     [SerializeField] private MeshRenderer meshRenderer;
     [SerializeField] private Transform point;
 
+    public Transform Point => point;
+
     public void ChangeColor(ColorType color)
     {
         meshRenderer.material = LevelManager.Ins.colorDataSO.GetMat(color);

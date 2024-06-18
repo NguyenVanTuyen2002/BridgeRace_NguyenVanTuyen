@@ -6,12 +6,12 @@ public class IdleState : IState<Bot>
 {
     public void OnEnter(Bot t)
     {
-
+        t.ChangeAnim(CacheString.Anim_Idle);
+        t.FindBrick();
     }
 
     public void OnExecute(Bot t)
     {
-        t.FindBrick();
         t.ChangeState(new PatrolState());
     }
 

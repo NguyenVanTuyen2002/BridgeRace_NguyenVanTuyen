@@ -19,6 +19,7 @@ public class Bot : Character
     public IdleState IdleState { get { return idleState; } }    
     public NavMeshAgent Agent { get => agent; set => agent = value; }
     public List<Brick> bricks;
+    public bool isMove;
 
     private void Start()
     {
@@ -34,9 +35,16 @@ public class Bot : Character
         }
     }
 
+    private void ChangeIdleState()
+    {
+        ChangeState(idleState);
+    }
+
     public void OnInit()
     {
         TF.rotation = Quaternion.Euler(0, 0, 0);
+        isMove = true;
+        Agent.enabled = true;
 
         agent.velocity = agent.velocity.normalized;
 
@@ -45,23 +53,24 @@ public class Bot : Character
             currentPlatform = LevelManager.Ins.currentLevel.platforms[0];
         }
 
-        
-        
-        Agent.isStopped = false; // Dừng NavMeshAgent của bot
-        
-
         gameObject.SetActive(true);
         ClearBrick();
 
         ChangeAnim(CacheString.Anim_Idle);
-        Invoke(nameof(IdleState), 0f);
+        Invoke(nameof(ChangeIdleState), 0f);
+        /*SetMove(true);
+        IsActiveAgent(true);
+        FindBrick();*/
     }
 
     public void Move(Vector3 pos)
     {
-        // truyen vao vi tri finish
-        Agent.SetDestination(pos);
-        ChangeAnim(CacheString.Anim_Run);
+        if (isMove)
+        {
+            // truyen vao vi tri finish
+            Agent.SetDestination(pos);
+            ChangeAnim(CacheString.Anim_Run);
+        }
     }
 
     public void StopMovement()
@@ -193,5 +202,15 @@ public class Bot : Character
     {
         yield return new WaitForSeconds(randomTime);
         ChangeState(botToFinishState);
+    }
+
+    public void IsActiveAgent(bool isActive)
+    {
+        Agent.enabled = isActive;
+    }
+
+    public void SetMove(bool isMove)
+    {
+        this.isMove = isMove;
     }
 }

@@ -9,13 +9,13 @@ public class PatrolState : IState<Bot>
 
     public void OnEnter(Bot t)
     {
-        Vector3 targetPos = t.FindNearestBrick();
+        /*Vector3 targetPos = t.FindNearestBrick();
         t.Agent.SetDestination(targetPos);
         t.ChangeAnim(CacheString.Anim_Run);
         
         timer = 0;
         randomTime = Random.Range(5f, 10f);
-        //t.ChangeStateToPatrolState(randomTime);
+        t.ChangeStateToPatrolState(randomTime);*/
         t.Move(t.targetBrick.TF.position);
     }
 

@@ -75,7 +75,7 @@ public class LevelManager : Singleton<LevelManager>
 
         //currentLevel.ShuffleListStartPoint();
 
-        //ChangeStateWinnerState();
+        ChangeStateWinnerState();
 
         //set vị trí cho player và bot
         setPlayerAndBot();
@@ -84,13 +84,13 @@ public class LevelManager : Singleton<LevelManager>
 
     }
 
-    /*public void ChangeStateWinnerState()
+    public void ChangeStateWinnerState()
     {
         for (int i = 0; i < bots.Count; i++)
         {
             bots[i].ChangeState(new WinnerState());
         }
-    }*/
+    }
 
     public void SpawnBot(List<ColorType> colors, int quantityBot)
     {
